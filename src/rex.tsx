@@ -1,5 +1,6 @@
 import React from "react";
 import produce from "immer";
+import shallowequal from "shallowequal";
 
 let RexContext = React.createContext({});
 
@@ -38,7 +39,7 @@ export function createStore<T>(initalState: T) {
       });
     },
     update: (f) => {
-      let newStore = produce(store.currentState, f);
+      let newStore = produce(store.currentState as any, f);
       store = produce(store, (draft) => {
         draft.currentState = newStore;
       });
@@ -55,8 +56,11 @@ export function mapStateToProps<T>(selector: (s: T) => any): any {
     origin: any;
     Child: any;
   }
+  interface IRexWrapperState {
+    props: any;
+  }
 
-  class RexWrapper extends React.PureComponent<IRexWrapperProps, any> {
+  class RexWrapper extends React.Component<IRexWrapperProps, IRexWrapperState> {
     constructor(props) {
       super(props);
 
@@ -70,9 +74,20 @@ export function mapStateToProps<T>(selector: (s: T) => any): any {
     }
 
     render() {
+      console.log("render Rex wrapper");
       let newProps = selector(this.props.store.getState());
       let Child = this.props.Child;
       return <Child {...this.state.props} {...this.props.origin} />;
+    }
+
+    shouldComponentUpdate(nextProps: IRexWrapperProps, nextState: IRexWrapperState) {
+      if (!shallowequal(nextProps, this.props)) {
+        return true;
+      }
+      if (!shallowequal(nextState.props, this.state.props)) {
+        return true;
+      }
+      return false;
     }
 
     componentDidMount() {
@@ -89,9 +104,11 @@ export function mapStateToProps<T>(selector: (s: T) => any): any {
       });
     };
   }
+
   return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     return class Interal extends Target {
       render() {
+        console.log("render interal");
         return (
           <RexContext.Consumer>
             {(value: any) => {

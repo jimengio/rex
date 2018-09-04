@@ -42,5 +42,7 @@
     "webpack-dev-server": "^3.1.6",
     "webpack-hud": "^0.1.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "shallowequal": "^1.1.0"
+  }
 }

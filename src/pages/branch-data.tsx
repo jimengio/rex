@@ -11,8 +11,8 @@ interface IProps {
 
 interface IState {}
 
-@mapStateToProps((store: IGlobalStore) => ({ data: store.data }))
-export default class Inside extends React.PureComponent<IProps, IState> {
+@mapStateToProps((store: IGlobalStore) => ({ data: store.branchData }))
+export default class BranchData extends React.PureComponent<IProps, IState> {
   constructor(props) {
     super(props);
 
@@ -24,11 +24,11 @@ export default class Inside extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    console.log("rendering inside");
+    console.log("rendering branch");
 
     return (
       <div className={styleContainer}>
-        <div>this is page inside</div>
+        <div>this is branched</div>
 
         <pre>{JSON.stringify(this.props, null, 2)}</pre>
       </div>

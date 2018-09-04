@@ -9,11 +9,13 @@ interface IProps {
 }
 
 export default (props: IProps) => {
+  console.log("rendering container");
+
   return (
     <div className={styleContainer}>
       <div className={styleTitle}>Container</div>
       <pre>{JSON.stringify(props.store, null, 2)}</pre>
-      <Home />
+      <Home data={props.store.homeData} />
     </div>
   );
 };
