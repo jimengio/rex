@@ -1,80 +1,107 @@
 import React from "react";
 import produce from "immer";
 
-let RexContext = React.createContext("rex");
+let RexContext = React.createContext({});
 
-export class RexProvider extends React.Component<any, any> {
-  render() {
-    return <RexContext.Provider value={this.props.store}>{this.props.children}</RexContext.Provider>;
-  }
+interface IRexProviderProps {
+  value: any;
 }
 
-export function createStore(initalState) {
+export class RexProvider extends React.Component<IRexProviderProps, any> {
+  render() {
+    return <RexContext.Provider value={this.props.value}>{this.props.children}</RexContext.Provider>;
+  }
+}
+interface IRexStore<T> {
+  getState: () => T;
+  subscribe: (f: (store: T) => void) => void;
+  unsubscribe: (f: (store: T) => void) => void;
+  update: (f: (store: T) => void) => void;
+}
+
+export function createStore<T>(initalState: T) {
   let store = {
-    initialState: initalState,
     currentState: initalState,
     listeners: [],
   };
 
   return {
     getState: () => store.currentState,
-    listen: (f) => {
+    subscribe: (f) => {
       store = produce(store, (draft) => {
         draft.listeners.push(f);
       });
     },
-    remove: (f) => {
+    unsubscribe: (f) => {
       store = produce(store, (draft) => {
         draft.listeners = draft.listeners.filter((x) => x != f);
       });
     },
     update: (f) => {
+      let newStore = produce(store.currentState, f);
       store = produce(store, (draft) => {
-        draft.currentState = f(draft.currentState);
+        draft.currentState = newStore;
+      });
+      store.listeners.forEach((cb) => {
+        cb(store.currentState);
       });
     },
-  };
+  } as IRexStore<T>;
 }
 
-export function mapStateToProps(selector) {
-  return (ChildComponent) => {
-    return (
-      <RexContext.Consumer>
-        {(store: any) => {
-          return class RexWrapper extends React.PureComponent<any, any> {
-            constructor(props) {
-              super(props);
+export function mapStateToProps<T>(selector: (s: T) => any): any {
+  interface IRexWrapperProps {
+    store: IRexStore<T>;
+    origin: any;
+    Child: any;
+  }
 
-              this.state = {
-                props: produce(selector(store.getState())),
-              };
-            }
+  class RexWrapper extends React.PureComponent<IRexWrapperProps, any> {
+    constructor(props) {
+      super(props);
 
-            immerState(f: (s: any) => void, cb?) {
-              this.setState(produce<any>(f), cb);
-            }
+      this.state = {
+        props: produce(selector(this.props.store.getState()), (x) => {}),
+      };
+    }
 
-            render() {
-              let newProps = selector(store);
-              return <ChildComponent {...this.state.props} />;
-            }
+    immerState(f: (s: any) => void, cb?) {
+      this.setState(produce<any>(f), cb);
+    }
 
-            componentDidMount() {
-              store.listen(this.onStoreChange);
-            }
+    render() {
+      let newProps = selector(this.props.store.getState());
+      let Child = this.props.Child;
+      return <Child {...this.state.props} {...this.props.origin} />;
+    }
 
-            componentWillMount() {
-              store.removeListener(this.onStoreChange);
-            }
+    componentDidMount() {
+      this.props.store.subscribe(this.onStoreChange);
+    }
 
-            onStoreChange = (newStore) => {
-              this.immerState((state) => {
-                state.props = selector(store.getState());
-              });
-            };
-          };
-        }}
-      </RexContext.Consumer>
-    );
+    componentWillMount() {
+      this.props.store.unsubscribe(this.onStoreChange);
+    }
+
+    onStoreChange = (newStore) => {
+      this.immerState((state) => {
+        state.props = selector(this.props.store.getState());
+      });
+    };
+  }
+  return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    return class Interal extends Target {
+      render() {
+        return (
+          <RexContext.Consumer>
+            {(value: any) => {
+              let store = value as IRexStore<T>;
+              console.log("global value", store);
+              return <RexWrapper store={store} origin={this.props} Child={Target} />;
+            }}
+          </RexContext.Consumer>
+        );
+      }
+    };
   };
 }

@@ -1,5 +1,7 @@
 import React from "react";
 import { css } from "emotion";
+import { doIncData } from "controllers/data";
+import Inside from "./inside";
 
 export default class Home extends React.Component {
   render() {
@@ -14,6 +16,8 @@ export default class Home extends React.Component {
         >
           Open content
         </a>
+        <a onClick={doIncData}>larger</a>
+        <Inside passed={"home data"} />
       </div>
     );
   }
