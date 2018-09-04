@@ -58,7 +58,7 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-    modules: [path.join(__dirname, "src"), "node_modules"],
+    modules: [path.join(__dirname, "src"), path.join(__dirname, "rex"), "node_modules"],
   },
   plugins: [
     new webpack.DefinePlugin({
