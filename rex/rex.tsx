@@ -2,6 +2,9 @@ import * as React from "react";
 import produce from "immer";
 import shallowequal from "shallowequal";
 
+function devPoint(...args) {
+  // console.log(...args)
+}
 let RexContext = React.createContext(null);
 
 interface IRexProviderProps {
@@ -50,17 +53,17 @@ export function createStore<T>(initalState: T) {
   } as IRexStore<T>;
 }
 
-interface IRexWrapperProps {
+interface IRexDataLayerProps {
   store: IRexStore<any>;
-  origin: any;
+  parentProps: any;
   Child: any;
   selector: (s: any) => any;
 }
-interface IRexWrapperState {
+interface IRexDataLayerState {
   props: any;
 }
 
-class RexWrapper extends React.Component<IRexWrapperProps, IRexWrapperState> {
+class RexDataLayer extends React.Component<IRexDataLayerProps, IRexDataLayerState> {
   constructor(props) {
     super(props);
 
@@ -70,18 +73,17 @@ class RexWrapper extends React.Component<IRexWrapperProps, IRexWrapperState> {
   }
 
   immerState(f: (s: any) => void, cb?) {
-    this.setState(produce<any>(f), cb);
+    this.setState(produce<IRexDataLayerState>(f), cb);
   }
 
   render() {
-    console.log("render Rex wrapper");
-    let newProps = this.props.selector(this.props.store.getState());
+    devPoint("render Rex wrapper");
     let Child = this.props.Child;
-    return <Child {...this.state.props} {...this.props.origin} />;
+    return <Child {...this.state.props} {...this.props.parentProps} />;
   }
 
-  shouldComponentUpdate(nextProps: IRexWrapperProps, nextState: IRexWrapperState) {
-    if (!shallowequal(nextProps.origin, this.props.origin)) {
+  shouldComponentUpdate(nextProps: IRexDataLayerProps, nextState: IRexDataLayerState) {
+    if (!shallowequal(nextProps.parentProps, this.props.parentProps)) {
       return true;
     }
     if (!shallowequal(nextState.props, this.state.props)) {
@@ -107,16 +109,16 @@ class RexWrapper extends React.Component<IRexWrapperProps, IRexWrapperState> {
 
 export function mapStateToProps<T>(selector: (s: T) => any): any {
   return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-    return class Interal extends Target {
+    return class RexContainer extends Target {
       render() {
-        console.log("render interal");
+        devPoint("render interal");
         return (
           <RexContext.Consumer>
             {(value: any) => {
               let store = value as IRexStore<T>;
-              console.log("consumer called");
+              devPoint("consumer called");
 
-              return <RexWrapper store={store} origin={this.props} Child={Target} selector={selector} />;
+              return <RexDataLayer store={store} parentProps={this.props} Child={Target} selector={selector} />;
             }}
           </RexContext.Consumer>
         );
