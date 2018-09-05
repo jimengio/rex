@@ -1,8 +1,8 @@
 {
   "name": "@jimengio/rex",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Data wrapper",
-  "main": "lib/rex.js",
+  "main": "./lib/rex.js",
   "types": "./lib/rex.d.ts",
   "scripts": {
     "format": "prettier src/*.tsx src/*/*.tsx rex/*.tsx  --write",
@@ -33,7 +33,6 @@
     "lodash": "^4.17.10",
     "prettier": "^1.14.2",
     "randomcolor": "^0.5.3",
-    "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "ruled-router": "^0.2.2",
     "style-loader": "^0.23.0",
@@ -45,6 +44,9 @@
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.6",
     "webpack-hud": "^0.1.2"
+  },
+  "peerDependencies": {
+    "react": "^16.4.2"
   },
   "dependencies": {
     "immer": "^1.5.0",
