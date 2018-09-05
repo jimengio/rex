@@ -26,6 +26,10 @@ export let initialStore: IGlobalStore = {
 };
 ```
 
+```ts
+export let globalStore = createStore<IGlobalStore>(initialStore);
+```
+
 View:
 
 ```tsx
