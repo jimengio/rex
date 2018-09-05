@@ -32,6 +32,7 @@
     "http-server": "^0.11.0",
     "lodash": "^4.17.10",
     "prettier": "^1.14.2",
+    "randomcolor": "^0.5.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "ruled-router": "^0.2.2",

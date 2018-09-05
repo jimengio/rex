@@ -1,8 +1,10 @@
 import React from "react";
 import { css } from "emotion";
+import randomcolor from "randomcolor";
 
 import Home from "./home";
 import { IGlobalStore } from "models/global";
+import { randomBg } from "util/color";
 
 interface IProps {
   store: IGlobalStore;
@@ -22,6 +24,7 @@ export default (props: IProps) => {
 
 const styleContainer = css`
   font-family: "Helvetica";
+  padding: 16px;
 `;
 
 const styleTitle = css`

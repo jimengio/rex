@@ -1,8 +1,12 @@
 import React from "react";
 import { css, cx } from "emotion";
 import produce from "immer";
+import randomcolor from "randomcolor";
+
 import { mapStateToProps } from "rex";
 import { IGlobalStore } from "models/global";
+import { doIncData } from "controllers/data";
+import { randomBg } from "util/color";
 
 interface IProps {
   passed: string;
@@ -27,9 +31,10 @@ export default class Inside extends React.PureComponent<IProps, IState> {
     console.log("rendering inside");
 
     return (
-      <div className={styleContainer}>
+      <div className={styleContainer} style={randomBg()}>
         <div>this is page inside</div>
 
+        <a onClick={doIncData}>Add data</a>
         <pre>{JSON.stringify(this.props, null, 2)}</pre>
       </div>
     );

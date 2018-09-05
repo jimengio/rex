@@ -81,7 +81,7 @@ export function mapStateToProps<T>(selector: (s: T) => any): any {
     }
 
     shouldComponentUpdate(nextProps: IRexWrapperProps, nextState: IRexWrapperState) {
-      if (!shallowequal(nextProps, this.props)) {
+      if (!shallowequal(nextProps.origin, this.props.origin)) {
         return true;
       }
       if (!shallowequal(nextState.props, this.state.props)) {

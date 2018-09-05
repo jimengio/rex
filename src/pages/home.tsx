@@ -3,6 +3,8 @@ import { css } from "emotion";
 import { doIncData, doIncBranch, doIncHome } from "controllers/data";
 import Inside from "./inside";
 import BranchData from "./branch-data";
+import randomcolor from "randomcolor";
+import { randomBg } from "util/color";
 
 interface IProps {
   data: number;
@@ -13,16 +15,13 @@ export default class Home extends React.PureComponent<IProps, any> {
     console.log("rendering home");
 
     return (
-      <div>
+      <div style={randomBg()}>
         Home Page, data:
         {this.props.data}
         <div>ok</div>
         <a onClick={doIncHome}>Add home</a>
         <Inside passed={"home data"} />
         <BranchData passed={"home data"} />
-        <a onClick={doIncData}>Add data</a>
-        <div className={styleSpace} />
-        <a onClick={doIncBranch}>Add branch</a>
       </div>
     );
   }

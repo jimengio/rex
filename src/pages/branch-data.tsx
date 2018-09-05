@@ -1,8 +1,12 @@
 import React from "react";
 import { css, cx } from "emotion";
 import produce from "immer";
+import randomcolor from "randomcolor";
+
 import { mapStateToProps } from "rex";
 import { IGlobalStore } from "models/global";
+import { doIncBranch } from "controllers/data";
+import { randomBg } from "util/color";
 
 interface IProps {
   passed: string;
@@ -27,8 +31,10 @@ export default class BranchData extends React.PureComponent<IProps, IState> {
     console.log("rendering branch");
 
     return (
-      <div className={styleContainer}>
+      <div className={styleContainer} style={randomBg()}>
         <div>this is branched</div>
+
+        <a onClick={doIncBranch}>Add branch</a>
 
         <pre>{JSON.stringify(this.props, null, 2)}</pre>
       </div>
