@@ -1,9 +1,12 @@
 {
-  "name": "mst-workflow",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@jimengio/rex",
+  "version": "0.0.2",
+  "description": "Data wrapper",
+  "main": "./lib/rex.js",
+  "types": "./lib/rex.d.ts",
   "scripts": {
+    "format": "prettier src/*.tsx src/*/*.tsx rex/*.tsx  --write",
+    "compile": "tsc -d --jsx react rex/*.tsx --outDir lib/",
     "dev": "webpack-dev-server --hot",
     "watch": "webpack-dev-server --hot",
     "release": "rm -rf dist/* && webpack --progress --config webpack.release.js",
@@ -27,9 +30,9 @@
     "history": "^4.6.1",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.0",
-    "immer": "^1.5.0",
     "lodash": "^4.17.10",
-    "react": "^16.4.2",
+    "prettier": "^1.14.2",
+    "randomcolor": "^0.5.3",
     "react-dom": "^16.4.2",
     "ruled-router": "^0.2.2",
     "style-loader": "^0.23.0",
@@ -42,5 +45,11 @@
     "webpack-dev-server": "^3.1.6",
     "webpack-hud": "^0.1.2"
   },
-  "dependencies": {}
+  "peerDependencies": {
+    "react": "^16.4.2"
+  },
+  "dependencies": {
+    "immer": "^1.5.0",
+    "shallowequal": "^1.1.0"
+  }
 }

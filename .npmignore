@@ -1,0 +1,8 @@
+
+.awcache/
+dist/
+src/
+template.ejs
+tsconfig.json
+webpack.*
+yarn.lock

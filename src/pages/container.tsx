@@ -1,33 +1,30 @@
 import React from "react";
-import { parseRoutePath, IRouteParseResult } from "ruled-router";
 import { css } from "emotion";
+import randomcolor from "randomcolor";
 
 import Home from "./home";
-import Content from "./content";
+import { IGlobalStore } from "models/global";
+import { randomBg } from "util/color";
 
-const renderChildPage = (routerTree: IRouteParseResult) => {
-  if (routerTree != null) {
-    switch (routerTree.name) {
-      case "home":
-        return <Home />;
-      case "content":
-        return <Content />;
-    }
-  }
-  return <div>NOTHING</div>;
-};
+interface IProps {
+  store: IGlobalStore;
+}
 
-export default (props) => {
+export default (props: IProps) => {
+  console.log("rendering container");
+
   return (
     <div className={styleContainer}>
       <div className={styleTitle}>Container</div>
-      {renderChildPage(props.router)}
+      <pre>{JSON.stringify(props.store, null, 2)}</pre>
+      <Home data={props.store.homeData} />
     </div>
   );
 };
 
 const styleContainer = css`
   font-family: "Helvetica";
+  padding: 16px;
 `;
 
 const styleTitle = css`

@@ -1,23 +1,23 @@
 import ReactDOM, { unstable_renderSubtreeIntoContainer } from "react-dom";
 import React from "react";
 
-import { parseRoutePath, IRouteParseResult } from "ruled-router";
-
-import { routerRules } from "./models/router-rules";
-
 import Container from "./pages/container";
+import { globalStore } from "store";
+import { RexProvider } from "rex";
 
 const renderApp = () => {
-  let routerTree = parseRoutePath(window.location.hash.slice(1), routerRules);
-
-  ReactDOM.render(<Container router={routerTree} />, document.querySelector(".app"));
+  ReactDOM.render(
+    <RexProvider value={globalStore}>
+      <Container store={globalStore.getState()} />
+    </RexProvider>,
+    document.querySelector(".app")
+  );
 };
 
-window.onload = renderApp;
-
-window.addEventListener("hashchange", () => {
+window.onload = () => {
   renderApp();
-});
+  globalStore.subscribe(renderApp);
+};
 
 declare var module: any;
 
