@@ -15,7 +15,10 @@ interface IProps {
 
 interface IState {}
 
-@mapStateToProps((store: IGlobalStore) => ({ data: store.data }))
+@mapStateToProps((store: IGlobalStore, ownProps: IProps) => {
+  console.log("ownProps", ownProps);
+  return { data: store.data };
+})
 export default class Inside extends React.PureComponent<IProps, IState> {
   constructor(props) {
     super(props);

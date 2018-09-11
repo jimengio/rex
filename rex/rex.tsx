@@ -57,7 +57,7 @@ interface IRexDataLayerProps {
   store: IRexStore<any>;
   parentProps: any;
   Child: any;
-  selector: (s: any) => any;
+  selector: (s: any, ownProps: any) => any;
 }
 interface IRexDataLayerState {
   props: any;
@@ -68,8 +68,12 @@ class RexDataLayer extends React.Component<IRexDataLayerProps, IRexDataLayerStat
     super(props);
 
     this.state = {
-      props: produce(this.props.selector(this.props.store.getState()), (x) => {}),
+      props: this.computeProps(),
     };
+  }
+
+  computeProps() {
+    return produce(this.props.selector(this.props.store.getState(), this.props.parentProps), (x) => {});
   }
 
   immerState(f: (s: any) => void, cb?) {
@@ -102,12 +106,12 @@ class RexDataLayer extends React.Component<IRexDataLayerProps, IRexDataLayerStat
 
   onStoreChange = (newStore) => {
     this.immerState((state) => {
-      state.props = this.props.selector(this.props.store.getState());
+      state.props = this.computeProps();
     });
   };
 }
 
-export function mapStateToProps<T>(selector: (s: T) => any): any {
+export function mapStateToProps<T>(selector: (s: T, ownProps?: any) => any): any {
   return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     return class RexContainer extends React.Component {
       render() {
