@@ -111,7 +111,7 @@ class RexDataLayer extends React.Component<IRexDataLayerProps, IRexDataLayerStat
   };
 }
 
-export function mapStateToProps<T>(selector: (s: T, ownProps?: any) => any): any {
+export function connectRex<T>(selector: (s: T, ownProps?: any) => any): any {
   return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     return class RexContainer extends React.Component {
       render() {
