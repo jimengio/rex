@@ -113,6 +113,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/shallowequal@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@types/shallowequal/-/shallowequal-0.2.3.tgz#d25150c25ef5f128b65a154e33ad62f3134e0cd8"
+
 "@webassemblyjs/ast@1.5.13":
   version "1.5.13"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.5.13.tgz#81155a570bd5803a30ec31436bc2c9c0ede38f25"
@@ -3552,15 +3556,6 @@ rc@^1.1.7:
 react-dom@^16.4.2:
   version "16.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.2.tgz#4afed569689f2c561d2b8da0b819669c38a0bda4"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
-react@^16.4.2:
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"

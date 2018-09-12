@@ -1,6 +1,6 @@
 import * as React from "react";
 import produce from "immer";
-import shallowequal from "shallowequal";
+import * as shallowequal from "shallowequal";
 
 function devPoint(...args) {
   // console.log(...args)
