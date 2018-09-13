@@ -69,7 +69,7 @@ Selector:
 ```tsx
 import { connectRex } from "rex";
 
-@connectRex((store: IGlobalStore) => ({ data: store.data }))
+@connectRex((store: IGlobalStore, ownProps: IProps) => ({ data: store.data }))
 export default class Inside extends React.PureComponent<IProps, IState> {
   render() {
     return <div />;
