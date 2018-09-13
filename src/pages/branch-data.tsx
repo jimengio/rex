@@ -3,7 +3,7 @@ import { css, cx } from "emotion";
 import produce from "immer";
 import randomcolor from "randomcolor";
 
-import { mapStateToProps } from "rex";
+import { connectRex } from "rex";
 import { IGlobalStore } from "models/global";
 import { doIncBranch } from "controllers/data";
 import { randomBg } from "util/color";
@@ -15,7 +15,7 @@ interface IProps {
 
 interface IState {}
 
-@mapStateToProps((store: IGlobalStore) => ({ data: store.branchData }))
+@connectRex((store: IGlobalStore) => ({ data: store.branchData }))
 export default class BranchData extends React.PureComponent<IProps, IState> {
   constructor(props) {
     super(props);

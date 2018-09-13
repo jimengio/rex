@@ -61,10 +61,10 @@ export function doIncData() {
 Selector:
 
 ```tsx
-@mapStateToProps((store: IGlobalStore) => ({ data: store.data }))
+@connectRex((store: IGlobalStore) => ({ data: store.data }))
 export default class Inside extends React.PureComponent<IProps, IState> {
   render() {
-    return <div/>;
+    return <div />;
   }
 }
 ```
