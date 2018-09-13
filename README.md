@@ -1,11 +1,13 @@
 ## Rex
 
-Store abstraction WIP...
+Store abstraction based on immer and Context APIs.
 
 ### Usage
 
+![](https://img.shields.io/npm/v/@jimengio/rex.svg)
+
 ```bash
-yarn add @jimengio/rex
+npm install @jimengio/rex
 ```
 
 Model:
@@ -27,12 +29,16 @@ export let initialStore: IGlobalStore = {
 ```
 
 ```ts
+import { createStore } from "rex";
+
 export let globalStore = createStore<IGlobalStore>(initialStore);
 ```
 
 View:
 
 ```tsx
+import { RexProvider } from "rex";
+
 const renderApp = () => {
   ReactDOM.render(
     <RexProvider value={globalStore}>
@@ -61,6 +67,8 @@ export function doIncData() {
 Selector:
 
 ```tsx
+import { connectRex } from "rex";
+
 @connectRex((store: IGlobalStore) => ({ data: store.data }))
 export default class Inside extends React.PureComponent<IProps, IState> {
   render() {
