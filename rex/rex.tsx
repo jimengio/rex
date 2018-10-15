@@ -33,7 +33,8 @@ export function createStore<T>(initalState: T) {
     getState: () => store.currentState,
     subscribe: (f) => {
       store = produce(store, (draft) => {
-        draft.listeners.push(f);
+        // bypass warning of "setState on unmounted component" with unshift
+        draft.listeners.unshift(f);
       });
     },
     unsubscribe: (f) => {
