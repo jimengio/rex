@@ -29,7 +29,7 @@ export let initialStore: IGlobalStore = {
 ```
 
 ```ts
-import { createStore } from "rex";
+import { createStore } from "@jimengio/rex";
 
 export let globalStore = createStore<IGlobalStore>(initialStore);
 ```
@@ -37,7 +37,7 @@ export let globalStore = createStore<IGlobalStore>(initialStore);
 View:
 
 ```tsx
-import { RexProvider } from "rex";
+import { RexProvider } from "@jimengio/rex";
 
 const renderApp = () => {
   ReactDOM.render(
@@ -67,7 +67,7 @@ export function doIncData() {
 Selector:
 
 ```tsx
-import { connectRex } from "rex";
+import { connectRex } from "@jimengio/rex";
 
 @connectRex((store: IGlobalStore, ownProps: IProps) => ({ data: store.data }))
 export default class Inside extends React.PureComponent<IProps, IState> {
