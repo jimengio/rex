@@ -2331,15 +2331,15 @@ ignore-walk@^3.0.1:
   dependencies:
     minimatch "^3.0.4"
 
+immer@*:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-2.1.0.tgz#d20f903b1f06a673a8040fe6a8b18bc803cd78ca"
+  integrity sha512-YhpS59RNxurPALgBX0bmTo4M04rXzruEgKtGLZ/cANLYc1bB9DjgoyMuuF+fcpA5voD7OOuSwYqmsjhDWX2c0w==
+
 immer@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.3.1.tgz#3a8c18d9d618c8b7169760a79beec24a1da6a43e"
   integrity sha1-OowY2dYYyLcWl2Cnm+7CSh2mpD4=
-
-immer@^1.7.3:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-1.7.3.tgz#c71fa79d8ba115a01198803e3ea1ed92ad1f230e"
-  integrity sha512-vmgik/m1H8wmG9hDDeO0bjlKdm1R3MAvfmlBEMLFBYy5q+ZhUTqgRD+iWjnbCGHIQEc64UOVUaRNaAG3kK7nLw==
 
 import-local@^2.0.0:
   version "2.0.0"
@@ -4267,7 +4267,7 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-shallowequal@^1.1.0:
+shallowequal@*:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==

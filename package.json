@@ -1,6 +1,6 @@
 {
   "name": "@jimengio/rex",
-  "version": "0.0.6",
+  "version": "0.0.7-a2",
   "description": "Data wrapper",
   "main": "./lib/rex.js",
   "types": "./lib/rex.d.ts",
@@ -12,7 +12,8 @@
     "release": "rm -rf dist/* && webpack --progress --config webpack.release.js",
     "build": "yarn release",
     "serve": "http-server dist/ -s",
-    "postinstall": "rm -rfv node_modules/@types/*/node_modules/@types/react"
+    "postinstall": "rm -rfv node_modules/@types/*/node_modules/@types/react",
+    "prepublish": "yarn compile"
   },
   "keywords": [],
   "author": "",
@@ -52,7 +53,7 @@
     "react": "^16.5.2"
   },
   "dependencies": {
-    "immer": "^1.7.3",
-    "shallowequal": "^1.1.0"
+    "immer": "*",
+    "shallowequal": "*"
   }
 }
