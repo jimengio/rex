@@ -77,6 +77,20 @@ export default class Inside extends React.PureComponent<IProps, IState> {
 }
 ```
 
+Or use hooks(Caution: it rerenders on every change) with `useRexContext`:
+
+```tsx
+let HooksChild: SFC<IProps> = (props) => {
+  let contextData = useRexContext((store: IGlobalStore) => {
+    return { data: store.data };
+  });
+
+  return (
+    <pre>{JSON.stringify(contextData, null, 2)}</pre>
+  );
+};
+```
+
 ### Workflow
 
 https://github.com/jimengio/ts-workflow
