@@ -2,24 +2,15 @@ import * as React from "react";
 import produce from "immer";
 import * as shallowequal from "shallowequal";
 
-function devPoint(...args) {
+function devPoint(...args: any[]) {
   // console.log(...args)
 }
-let RexContext = React.createContext(null);
 
-interface IRexProviderProps {
-  value: any;
-}
+// Rex Store Implementation
 
-export class RexProvider extends React.Component<IRexProviderProps, any> {
-  render() {
-    return <RexContext.Provider value={this.props.value}>{this.props.children}</RexContext.Provider>;
-  }
-}
 interface IRexStore<T> {
   getState: () => T;
-  subscribe: (f: (store: T) => void) => void;
-  unsubscribe: (f: (store: T) => void) => void;
+  subscribe: (f: (store: T) => void) => { unsubscribe: () => void };
   update: (f: (store: T) => void) => void;
 }
 
@@ -36,11 +27,14 @@ export function createStore<T>(initalState: T) {
         // bypass warning of "setState on unmounted component" with unshift
         draft.listeners.unshift(f);
       });
-    },
-    unsubscribe: (f) => {
-      store = produce(store, (draft) => {
-        draft.listeners = draft.listeners.filter((x) => x != f);
-      });
+
+      return {
+        unsubscribe: () => {
+          store = produce(store, (draft) => {
+            draft.listeners = draft.listeners.filter((x) => x != f);
+          });
+        },
+      };
     },
     update: (f) => {
       let newStore = produce(store.currentState as any, f);
@@ -54,80 +48,72 @@ export function createStore<T>(initalState: T) {
   } as IRexStore<T>;
 }
 
-interface IRexDataLayerProps {
-  store: IRexStore<any>;
-  parentProps: any;
-  Child: any;
-  selector: (s: any, ownProps: any) => any;
-}
-interface IRexDataLayerState {
-  props: any;
+// Context
+
+let RexContext = React.createContext(null);
+
+// Context Provider
+
+interface IRexProviderProps {
+  value: IRexStore<any>;
 }
 
-class RexDataLayer extends React.Component<IRexDataLayerProps, IRexDataLayerState> {
-  constructor(props) {
-    super(props);
+export let RexProvider: React.SFC<IRexProviderProps> = (props) => {
+  let [storeValue, setStoreValue] = React.useState(props.value.getState);
 
-    this.state = {
-      props: this.computeProps(),
+  React.useEffect(() => {
+    let result = props.value.subscribe(() => {
+      setStoreValue(props.value.getState());
+    });
+    return () => {
+      result.unsubscribe();
     };
-  }
+  }, []);
 
-  computeProps() {
-    return produce(this.props.selector(this.props.store.getState(), this.props.parentProps), (x) => {});
-  }
+  return <RexContext.Provider value={storeValue}>{props.children}</RexContext.Provider>;
+};
 
-  immerState(f: (s: any) => void, cb?) {
-    this.setState(produce<IRexDataLayerState>(f), cb);
-  }
+// Context Consumer and Child rendering
 
+interface IRexDataLayerProps {
+  parentProps: any;
+  computedProps: any;
+  Child: any;
+}
+
+class RexDataLayer extends React.Component<IRexDataLayerProps, any> {
   render() {
     devPoint("render Rex wrapper");
     let Child = this.props.Child;
-    return <Child {...this.state.props} {...this.props.parentProps} />;
+    return <Child {...this.props.computedProps} {...this.props.parentProps} />;
   }
 
-  shouldComponentUpdate(nextProps: IRexDataLayerProps, nextState: IRexDataLayerState) {
-    if (!shallowequal(nextProps.parentProps, this.props.parentProps)) {
-      return true;
-    }
-    if (!shallowequal(nextState.props, this.state.props)) {
-      return true;
-    }
+  // only usage of this component is to prevent unnecessary changes
+  shouldComponentUpdate(nextProps: IRexDataLayerProps, nextState: any) {
+    if (!shallowequal(nextProps.parentProps, this.props.parentProps)) return true;
+    if (!shallowequal(nextProps.computedProps, this.props.computedProps)) return true;
     return false;
   }
-
-  componentDidMount() {
-    this.props.store.subscribe(this.onStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.props.store.unsubscribe(this.onStoreChange);
-  }
-
-  onStoreChange = (newStore) => {
-    this.immerState((state) => {
-      state.props = this.computeProps();
-    });
-  };
 }
 
 export function connectRex<T>(selector: (s: T, ownProps?: any) => any): any {
   return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-    return class RexContainer extends React.Component {
-      render() {
-        devPoint("render interal");
-        return (
-          <RexContext.Consumer>
-            {(value: any) => {
-              let store = value as IRexStore<T>;
-              devPoint("consumer called");
+    let RexContainer: React.SFC<any> = (props) => {
+      devPoint("render interal");
 
-              return <RexDataLayer store={store} parentProps={this.props} Child={Target} selector={selector} />;
-            }}
-          </RexContext.Consumer>
-        );
-      }
+      let storeValue: T = React.useContext(RexContext);
+      devPoint("consumer called");
+      return <RexDataLayer parentProps={props} Child={Target} computedProps={selector(storeValue, props)} />;
     };
+    return RexContainer;
   };
+}
+
+// Hooks APIs
+
+export function useRexContext<T>(selector: (s: T) => any): any {
+  // [Caution on performance] components use useContext will be called on every change
+  let contextValue: T = React.useContext(RexContext);
+
+  return selector(contextValue);
 }
