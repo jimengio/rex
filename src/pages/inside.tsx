@@ -20,7 +20,7 @@ interface IState {}
   return { data: store.data };
 })
 export default class Inside extends React.PureComponent<IProps, IState> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {};
