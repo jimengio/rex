@@ -8,7 +8,7 @@ function devPoint(...args: any[]) {
 
 // Rex Store Implementation
 
-interface IRexStore<T> {
+export interface IRexStore<T> {
   getState: () => T;
   subscribe: (f: (store: T) => void) => { unsubscribe: () => void };
   update: (f: (store: T) => void) => void;
