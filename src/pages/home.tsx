@@ -9,6 +9,7 @@ import HooksChild from "./hooks-child";
 
 interface IProps {
   data: number;
+  obj: { a: number };
 }
 
 export default class Home extends React.PureComponent<IProps, any> {
@@ -20,6 +21,7 @@ export default class Home extends React.PureComponent<IProps, any> {
         <div className={styleHome} style={randomBg()}>
           Home Page, data:
           {this.props.data}
+          {JSON.stringify(this.props.obj)}
           <div>ok</div>
           <a onClick={doIncHome}>Add home</a>
         </div>

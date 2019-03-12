@@ -17,7 +17,7 @@ export default (props: IProps) => {
     <div className={styleContainer}>
       <div className={styleTitle}>Container</div>
       <pre>{JSON.stringify(props.store, null, 2)}</pre>
-      <Home data={props.store.homeData} />
+      <Home data={props.store.homeData} obj={props.store.obj} />
     </div>
   );
 };

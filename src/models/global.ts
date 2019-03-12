@@ -3,6 +3,9 @@ export interface IGlobalStore {
   data: number;
   branchData: number;
   homeData: number;
+  obj: {
+    a: number;
+  };
 }
 
 export let initialStore: IGlobalStore = {
@@ -10,4 +13,5 @@ export let initialStore: IGlobalStore = {
   data: 2,
   branchData: 2,
   homeData: 2,
+  obj: { a: 2 },
 };

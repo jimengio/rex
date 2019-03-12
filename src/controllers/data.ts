@@ -16,4 +16,7 @@ export function doIncHome() {
   globalStore.update((store) => {
     store.homeData += 1;
   });
+  globalStore.updateAt("obj", (obj) => {
+    obj.a += 1;
+  });
 }
