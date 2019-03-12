@@ -1,6 +1,6 @@
 {
   "name": "@jimengio/rex",
-  "version": "0.1.1-a1",
+  "version": "0.1.1-a2",
   "description": "Data wrapper",
   "main": "./lib/rex.js",
   "types": "./lib/rex.d.ts",

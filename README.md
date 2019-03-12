@@ -18,6 +18,9 @@ export interface IGlobalStore {
   data: number;
   branchData: number;
   homeData: number;
+  obj: {
+    a: number;
+  }
 }
 
 export let initialStore: IGlobalStore = {
@@ -25,6 +28,7 @@ export let initialStore: IGlobalStore = {
   data: 2,
   branchData: 2,
   homeData: 2,
+  obj: { a: 2 }
 };
 ```
 
@@ -60,6 +64,10 @@ Controller:
 export function doIncData() {
   globalStore.update((store) => {
     store.data += 1;
+  });
+
+  globalStore.updateAt("obj", (obj) => {
+    obj.a += 1;
   });
 }
 ```

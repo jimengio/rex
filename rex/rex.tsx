@@ -12,6 +12,7 @@ export interface IRexStore<T> {
   getState: () => T;
   subscribe: (f: (store: T) => void) => { unsubscribe: () => void };
   update: (f: (store: T) => void) => void;
+  updateAt: <K extends keyof T>(k: K, f: (x: T[K]) => void) => void;
 }
 
 export function createStore<T>(initalState: T) {
@@ -43,6 +44,11 @@ export function createStore<T>(initalState: T) {
       });
       store.listeners.forEach((cb) => {
         cb(store.currentState);
+      });
+    },
+    updateAt: function<K extends keyof T>(k: K, f: (x: T[K]) => void) {
+      this.update((s) => {
+        f(s[k]);
       });
     },
   } as IRexStore<T>;
