@@ -20,13 +20,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/history": "^4.7.2",
-    "@types/lodash": "^4.14.122",
-    "@types/react": "^16.8.7",
-    "@types/react-dom": "^16.8.2",
+    "@types/lodash": "^4.14.123",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.3",
     "@types/shallowequal": "^1.1.1",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^2.1.1",
-    "emotion": "^10.0.7",
+    "emotion": "^10.0.9",
     "file-loader": "^3.0.1",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
@@ -35,23 +35,23 @@
     "lodash": "^4.17.11",
     "prettier": "^1.16.4",
     "randomcolor": "^0.5.4",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "ruled-router": "^0.2.2",
     "style-loader": "^0.23.1",
-    "typescript": "^3.1.3333",
+    "typescript": "^3.4.2",
     "typescript-styled-plugin": "^0.14.0",
     "url-loader": "^1.1.2",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.0",
     "webpack-hud": "^0.1.2"
   },
   "peerDependencies": {
     "react": "^16.5.2"
   },
   "dependencies": {
-    "immer": "^2.1.1",
+    "immer": "*",
     "shallowequal": "*"
   }
 }
