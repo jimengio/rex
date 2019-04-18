@@ -3,16 +3,19 @@ import produce from "immer";
 import * as shallowequal from "shallowequal";
 
 let logKey = "REX_DEV_LOG";
-window[logKey] = false;
+
+if (typeof window !== "undefined") {
+  window[logKey] = false;
+}
 
 let devLog = (...args: any[]) => {
-  if (window[logKey]) {
+  if (window && window[logKey]) {
     console.log(...args);
   }
 };
 
 let devTrace = (...args: any[]) => {
-  if (window[logKey]) {
+  if (window && window[logKey]) {
     console.trace(...args);
   }
 };
