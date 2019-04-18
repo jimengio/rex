@@ -2,6 +2,21 @@ import * as React from "react";
 import produce from "immer";
 import * as shallowequal from "shallowequal";
 
+let logKey = "REX_DEV_LOG";
+window[logKey] = false;
+
+let devLog = (...args: any[]) => {
+  if (window[logKey]) {
+    console.log(...args);
+  }
+};
+
+let devTrace = (...args: any[]) => {
+  if (window[logKey]) {
+    console.trace(...args);
+  }
+};
+
 function devPoint(...args: any[]) {
   // console.log(...args)
 }
@@ -16,40 +31,41 @@ export interface IRexStore<T> {
 }
 
 export function createStore<T>(initalState: T) {
-  let store = {
+  let rexContainer = {
     currentState: initalState,
     listeners: [],
   };
 
+  let emitChange = () => {
+    devLog("Emit data", rexContainer.currentState);
+    rexContainer.listeners.forEach((cb) => {
+      cb(rexContainer.currentState);
+    });
+  };
+
   return {
-    getState: () => store.currentState,
+    getState: () => rexContainer.currentState,
     subscribe: (f) => {
-      store = produce(store, (draft) => {
-        // bypass warning of "setState on unmounted component" with unshift
-        draft.listeners.unshift(f);
-      });
+      // bypass warning of "setState on unmounted component" with unshift
+      rexContainer.listeners.unshift(f);
 
       return {
         unsubscribe: () => {
-          store = produce(store, (draft) => {
-            draft.listeners = draft.listeners.filter((x) => x != f);
-          });
+          rexContainer.listeners = rexContainer.listeners.filter((x) => x != f);
         },
       };
     },
     update: (f) => {
-      let newStore = produce(store.currentState as any, f);
-      store = produce(store, (draft) => {
-        draft.currentState = newStore;
-      });
-      store.listeners.forEach((cb) => {
-        cb(store.currentState);
-      });
+      devTrace("Update with f", f);
+      rexContainer.currentState = produce(rexContainer.currentState as any, f);
+      emitChange();
     },
     updateAt: function<K extends keyof T>(k: K, f: (x: T[K]) => void) {
-      this.update((s) => {
-        f(s[k]);
+      devTrace("update partial with f", f);
+      rexContainer.currentState = produce(rexContainer.currentState as any, (store) => {
+        f(store[k]);
       });
+      emitChange();
     },
   } as IRexStore<T>;
 }
@@ -89,7 +105,6 @@ interface IRexDataLayerProps {
 
 class RexDataLayer extends React.Component<IRexDataLayerProps, any> {
   render() {
-    devPoint("render Rex wrapper");
     let Child = this.props.Child;
     return <Child {...this.props.computedProps} {...this.props.parentProps} />;
   }
@@ -105,10 +120,7 @@ class RexDataLayer extends React.Component<IRexDataLayerProps, any> {
 export function connectRex<T>(selector: (s: T, ownProps?: any) => any): any {
   return (Target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     let RexContainer: React.SFC<any> = (props) => {
-      devPoint("render interal");
-
       let storeValue: T = React.useContext(RexContext);
-      devPoint("consumer called");
       return <RexDataLayer parentProps={props} Child={Target} computedProps={selector(storeValue, props)} />;
     };
     return RexContainer;
