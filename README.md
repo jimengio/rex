@@ -20,7 +20,7 @@ export interface IGlobalStore {
   homeData: number;
   obj: {
     a: number;
-  }
+  };
 }
 
 export let initialStore: IGlobalStore = {
@@ -28,7 +28,7 @@ export let initialStore: IGlobalStore = {
   data: 2,
   branchData: 2,
   homeData: 2,
-  obj: { a: 2 }
+  obj: { a: 2 },
 };
 ```
 
@@ -93,10 +93,16 @@ let HooksChild: SFC<IProps> = (props) => {
     return { data: store.data };
   });
 
-  return (
-    <pre>{JSON.stringify(contextData, null, 2)}</pre>
-  );
+  return <pre>{JSON.stringify(contextData, null, 2)}</pre>;
 };
+```
+
+### Debug
+
+Rex added a log even in release mode for debugging, add run this to turn on:
+
+```js
+window.REX_DEV_LOG = true;
 ```
 
 ### Workflow

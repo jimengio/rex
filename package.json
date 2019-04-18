@@ -1,7 +1,7 @@
 {
   "name": "@jimengio/rex",
-  "version": "0.1.2-a1",
-  "description": "Data wrapper",
+  "version": "0.1.2",
+  "description": "A very simplified Redux-like state manage tool with Immer built-in",
   "main": "./lib/rex.js",
   "types": "./lib/rex.d.ts",
   "scripts": {
@@ -48,10 +48,10 @@
     "webpack-hud": "^0.1.2"
   },
   "peerDependencies": {
-    "react": "^16.5.2"
+    "react": "*",
+    "immer": "*"
   },
   "dependencies": {
-    "immer": "*",
     "shallowequal": "*"
   }
 }
