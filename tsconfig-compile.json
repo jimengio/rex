@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react",
+    "lib": ["es2016", "dom"],
+    "types": [],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
+  },
+  "include": ["rex/*.tsx"],
+  "exclude": ["lib/*", "src/*"]
+}
