@@ -1,6 +1,7 @@
 var path = require("path");
 var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+let ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -21,8 +22,23 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        loader: "awesome-typescript-loader",
         exclude: /node_modules/,
+        use: [
+          { loader: "cache-loader" },
+          {
+            loader: "thread-loader",
+            options: {
+              workers: require("os").cpus().length - 1,
+              poolTimeout: Infinity,
+            },
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              happyPackMode: true,
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|svg|ttf|jpg|png|woff2?|mp3)(\?.+)?$/,
@@ -45,8 +61,19 @@ module.exports = {
     clientLogLevel: "info",
     disableHostCheck: true,
     host: "0.0.0.0",
+    stats: {
+      all: false,
+      colors: true,
+      errors: true,
+      errorDetails: true,
+      performance: true,
+      reasons: true,
+      timings: true,
+      warnings: true,
+    },
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true, async: false }),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
