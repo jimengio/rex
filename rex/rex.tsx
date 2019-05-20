@@ -132,9 +132,9 @@ export function connectRex<T>(selector: (s: T, ownProps?: any) => any): any {
 
 // Hooks APIs
 
-export function useRexContext<T>(selector: (s: T) => any): any {
+export function useRexContext<S, T = any>(selector: (s: S) => T): T {
   // [Caution on performance] components use useContext will be called on every change
-  let contextValue: T = React.useContext(RexContext);
+  let contextValue: S = React.useContext(RexContext);
 
   return selector(contextValue);
 }
