@@ -84,11 +84,14 @@ interface IRexProviderProps {
 }
 
 export let RexProvider: React.SFC<IRexProviderProps> = (props) => {
-  let [storeValue, setStoreValue] = React.useState(props.value.getState);
+  let [storeValue, setStoreValue] = React.useState(props.value.getState());
+
+  devLog("Provide value:", storeValue);
 
   React.useEffect(() => {
     let result = props.value.subscribe(() => {
       setStoreValue(props.value.getState());
+      devLog("Provide new value:", props.value.getState());
     });
     return () => {
       result.unsubscribe();
