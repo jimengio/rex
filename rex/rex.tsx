@@ -93,6 +93,9 @@ export let RexProvider: React.SFC<IRexProviderProps> = (props) => {
       setStoreValue(props.value.getState());
       devLog("Provide new value:", props.value.getState());
     });
+
+    console.info("Rex provider is now listening.");
+
     return () => {
       result.unsubscribe();
     };
