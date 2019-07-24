@@ -2,6 +2,8 @@
 
 Store abstraction based on immer and Context APIs.
 
+Minimal example for Rex: https://github.com/minimal-xyz/minimal-rex/tree/master/src .
+
 ### Usage
 
 ![](https://img.shields.io/npm/v/@jimengio/rex.svg)
