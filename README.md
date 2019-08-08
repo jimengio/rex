@@ -2,7 +2,15 @@
 
 Store abstraction based on immer and Context APIs.
 
-Minimal example for Rex: https://github.com/minimal-xyz/minimal-rex/tree/master/src .
+### Rationale
+
+In our app, we think Redux is too general and we want a more specific solution for our own case:
+
+- we want all data wrapped by immer, and in a simpler syntax.
+- better support for TypeScript.
+- since we are manipulating data in a mutating syntax, actions looks redundant so we discourage using it, instead we use mutation functions directly.
+
+Rex prefers MVC pattern from early React apps. There might be performance issues since `useContext` API is used and we need further investigation.
 
 ### Usage
 
@@ -12,9 +20,15 @@ Minimal example for Rex: https://github.com/minimal-xyz/minimal-rex/tree/master/
 npm install @jimengio/rex
 ```
 
-Model:
+Read runnable app example at https://github.com/minimal-xyz/minimal-rex/tree/master/src .
+
+Basically, a Rex app is an MVC app:
+
+##### Model
 
 ```ts
+import { createStore } from "@jimengio/rex";
+
 export interface IGlobalStore {
   schemaVersion: string;
   data: number;
@@ -32,35 +46,11 @@ export let initialStore: IGlobalStore = {
   homeData: 2,
   obj: { a: 2 },
 };
-```
-
-```ts
-import { createStore } from "@jimengio/rex";
 
 export let globalStore = createStore<IGlobalStore>(initialStore);
 ```
 
-View:
-
-```tsx
-import { RexProvider } from "@jimengio/rex";
-
-const renderApp = () => {
-  ReactDOM.render(
-    <RexProvider value={globalStore}>
-      <Container store={globalStore.getState()} />
-    </RexProvider>,
-    document.querySelector(".app")
-  );
-};
-
-window.onload = () => {
-  renderApp();
-  globalStore.subscribe(renderApp);
-};
-```
-
-Controller:
+##### Controller
 
 ```ts
 export function doIncData() {
@@ -74,7 +64,43 @@ export function doIncData() {
 }
 ```
 
-Selector:
+##### View
+
+First step is to provide th context in root component:
+
+```tsx
+import { RexProvider } from "@jimengio/rex";
+
+const renderApp = () => {
+  ReactDOM.render(
+    <RexProvider value={globalStore}>
+      <Container />
+    </RexProvider>,
+    document.querySelector(".app")
+  );
+};
+
+window.onload = () => {
+  renderApp();
+  globalStore.subscribe(renderApp);
+};
+```
+
+To read data in child components, use function `useRexContext`.
+
+> Notice that it rerenders on every change, so there might be performance issues when data is large.
+
+```tsx
+let HooksChild: FC<IProps> = (props) => {
+  let data = useRexContext((store: IGlobalStore) => {
+    return store.data;
+  });
+
+  return <pre>{JSON.stringify(data)}</pre>;
+};
+```
+
+For class-based components, use `connectRex`:
 
 ```tsx
 import { connectRex } from "@jimengio/rex";
@@ -82,21 +108,9 @@ import { connectRex } from "@jimengio/rex";
 @connectRex((store: IGlobalStore, ownProps: IProps) => ({ data: store.data }))
 export default class Inside extends React.PureComponent<IProps, IState> {
   render() {
-    return <div />;
+    return <pre>{JSON.stringify(this.props.data)}</pre>;
   }
 }
-```
-
-Or use hooks(Caution: it rerenders on every change) with `useRexContext`:
-
-```tsx
-let HooksChild: SFC<IProps> = (props) => {
-  let contextData = useRexContext((store: IGlobalStore) => {
-    return { data: store.data };
-  });
-
-  return <pre>{JSON.stringify(contextData, null, 2)}</pre>;
-};
 ```
 
 ### Debug
