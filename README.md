@@ -66,13 +66,15 @@ export function doIncData() {
 
 ##### View
 
+First step is to provide th context in root component:
+
 ```tsx
 import { RexProvider } from "@jimengio/rex";
 
 const renderApp = () => {
   ReactDOM.render(
     <RexProvider value={globalStore}>
-      <Container store={globalStore.getState()} />
+      <Container />
     </RexProvider>,
     document.querySelector(".app")
   );
@@ -89,12 +91,12 @@ To read data in child components, use function `useRexContext`.
 > Notice that it rerenders on every change, so there might be performance issues when data is large.
 
 ```tsx
-let HooksChild: SFC<IProps> = (props) => {
-  let contextData = useRexContext((store: IGlobalStore) => {
-    return { data: store.data };
+let HooksChild: FC<IProps> = (props) => {
+  let data = useRexContext((store: IGlobalStore) => {
+    return store.data;
   });
 
-  return <pre>{JSON.stringify(contextData, null, 2)}</pre>;
+  return <pre>{JSON.stringify(data)}</pre>;
 };
 ```
 
@@ -106,7 +108,7 @@ import { connectRex } from "@jimengio/rex";
 @connectRex((store: IGlobalStore, ownProps: IProps) => ({ data: store.data }))
 export default class Inside extends React.PureComponent<IProps, IState> {
   render() {
-    return <div />;
+    return <pre>{JSON.stringify(this.props.data)}</pre>;
   }
 }
 ```
