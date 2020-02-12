@@ -1,6 +1,6 @@
 ## Rex
 
-Store abstraction based on immer and Context APIs.
+> Store abstraction based on immer and Context APIs.
 
 ### Rationale
 
@@ -11,6 +11,8 @@ In our app, we think Redux is too general and we want a more specific solution f
 - since we are manipulating data in a mutating syntax, actions looks redundant so we discourage using it, instead we use mutation functions directly.
 
 Rex prefers MVC pattern from early React apps. There might be performance issues since `useContext` API is used and we need further investigation.
+
+Notice: you might not need Rex when Hooks APIs is enough for reusing states. you might need Redux or some other libraries if you apps grow really complicated.
 
 ### Usage
 

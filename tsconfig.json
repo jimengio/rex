@@ -12,10 +12,8 @@
     "jsx": "react",
     "lib": ["es2016", "dom"],
     "types": [],
-    "baseUrl": "./src/",
-    "paths": {
-      "rex": ["../rex/rex.tsx"]
-    },
+    "baseUrl": "./example/",
+    "paths": {},
     "plugins": [
       {
         "name": "typescript-styled-plugin"

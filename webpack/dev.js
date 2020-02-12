@@ -1,58 +1,27 @@
 var path = require("path");
 var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+let HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
 let ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+
+let { matchCssRule, matchFontsRule, matchTsRule } = require("./shared");
+let splitChunks = require("./split-chunks");
+let dllManifest = require("./dll/manifest.json");
 
 module.exports = {
   mode: "development",
-  entry: ["./src/main.tsx"],
+  entry: ["webpack-hud", "./example/main.tsx"],
   output: {
     filename: "index.js",
     path: path.join(__dirname, "/dist"),
   },
   devtool: "cheap-source-map",
   module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          "style-loader", // creates style nodes from JS strings
-          "css-loader", // translates CSS into CommonJS
-        ],
-      },
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: [
-          { loader: "cache-loader" },
-          {
-            loader: "thread-loader",
-            options: {
-              workers: require("os").cpus().length - 1,
-              poolTimeout: Infinity,
-            },
-          },
-          {
-            loader: "ts-loader",
-            options: {
-              happyPackMode: true,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(eot|svg|ttf|jpg|png|woff2?|mp3)(\?.+)?$/,
-        loader: "url-loader",
-        query: {
-          limit: 100,
-          name: "assets/[hash:8].[ext]",
-        },
-      },
-    ],
+    rules: [matchCssRule, matchFontsRule, matchTsRule],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-    modules: [path.join(__dirname, "src"), path.join(__dirname, "rex"), "node_modules"],
+    modules: [path.join(__dirname, "../example"), "node_modules"],
   },
   devServer: {
     contentBase: __dirname,
@@ -72,12 +41,26 @@ module.exports = {
       warnings: true,
     },
   },
+  optimization: {
+    minimize: false,
+    namedModules: true,
+    chunkIds: "named",
+    splitChunks: splitChunks,
+  },
   plugins: [
     new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true, async: false }),
+    new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, "dll/manifest.json"),
+    }),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: "template.ejs",
+      trackingCode: "",
+    }),
+    new HtmlWebpackTagsPlugin({
+      tags: [`dll/${dllManifest.name}.js`],
+      append: false,
     }),
   ],
 };
