@@ -3,7 +3,7 @@ import { css, cx } from "emotion";
 import produce from "immer";
 import randomcolor from "randomcolor";
 
-import { connectRex } from "rex";
+import { connectRex } from "../../src/rex";
 import { IGlobalStore } from "models/global";
 import { doIncBranch } from "controllers/data";
 import { randomBg } from "util/color";

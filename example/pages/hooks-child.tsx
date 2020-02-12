@@ -2,7 +2,7 @@ import React, { SFC } from "react";
 import { css, cx } from "emotion";
 import randomcolor from "randomcolor";
 
-import { connectRex, useRexContext } from "rex";
+import { connectRex, useRexContext } from "../../src/rex";
 import { IGlobalStore } from "models/global";
 import { doIncData } from "controllers/data";
 import { randomBg } from "util/color";

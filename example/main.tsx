@@ -3,7 +3,7 @@ import React from "react";
 
 import Container from "./pages/container";
 import { globalStore } from "store";
-import { RexProvider } from "rex";
+import { RexProvider } from "../src/rex";
 
 const renderApp = () => {
   ReactDOM.render(

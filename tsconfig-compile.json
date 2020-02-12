@@ -12,12 +12,8 @@
     "jsx": "react",
     "lib": ["es2016", "dom"],
     "types": [],
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin"
-      }
-    ]
+    "plugins": []
   },
-  "include": ["rex/*.tsx"],
-  "exclude": ["lib/*", "src/*"]
+  "include": ["src/*.tsx"],
+  "exclude": ["lib/*", "example/*"]
 }
