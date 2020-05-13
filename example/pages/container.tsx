@@ -5,6 +5,7 @@ import randomcolor from "randomcolor";
 import Home from "./home";
 import { IGlobalStore } from "models/global";
 import { randomBg } from "util/color";
+import DemoAtom from "demo-atom";
 
 interface IProps {
   store: IGlobalStore;
@@ -18,6 +19,10 @@ export default (props: IProps) => {
       <div className={styleTitle}>Container</div>
       <pre>{JSON.stringify(props.store, null, 2)}</pre>
       <Home data={props.store.homeData} obj={props.store.obj} />
+
+      <DemoAtom />
+
+      <div className={styleSpace}></div>
     </div>
   );
 };
@@ -29,4 +34,8 @@ const styleContainer = css`
 
 const styleTitle = css`
   margin-bottom: 16px;
+`;
+
+let styleSpace = css`
+  height: 200px;
 `;
