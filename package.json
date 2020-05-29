@@ -1,6 +1,6 @@
 {
   "name": "@jimengio/rex",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A very simplified Redux-like state manage tool with Immer built-in",
   "main": "./lib/rex.js",
   "types": "./lib/rex.d.ts",
