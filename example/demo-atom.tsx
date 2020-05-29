@@ -11,7 +11,8 @@ let DemoAtom: FC<{ className?: string }> = React.memo((props) => {
   /** Renderers */
   return (
     <div className={props.className}>
-      <pre>{JSON.stringify(dataAtom.deref(), null, 2)}</pre>
+      <pre>deref: {JSON.stringify(dataAtom.deref(), null, 2)}</pre>
+      <pre>current: {JSON.stringify(dataAtom.current, null, 2)}</pre>
       <div>
         <button
           onClick={() => {

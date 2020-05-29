@@ -7,10 +7,12 @@ export let useAtom = <T>(data: T) => {
   let [state, setState] = useState(data);
   let dataRef = useRef(data);
 
-  console.log("Atom demo updating");
-
   return {
     deref: () => dataRef.current,
+    /** alias for .deref(), a getter */
+    get current() {
+      return dataRef.current;
+    },
     resetWith: (newData: T) => {
       dataRef.current = newData;
       setState(newData);

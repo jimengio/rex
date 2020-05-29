@@ -14,6 +14,6 @@
     "types": [],
     "plugins": []
   },
-  "include": ["src/*.tsx"],
+  "include": ["src/*.tsx", "src/*.ts"],
   "exclude": ["lib/*", "example/*"]
 }
