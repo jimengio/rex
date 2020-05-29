@@ -25,6 +25,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - run: yarn && yarn build-scripts && npm publish
+      - run: yarn && yarn compile && npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
