@@ -6,3 +6,10 @@ template.ejs
 tsconfig.json
 webpack.*
 yarn.lock
+
+.editorconfig
+.gitattributes
+.prettierrc
+webpack/
+tsconfig-compile.json
+example/
