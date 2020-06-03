@@ -13,3 +13,4 @@ yarn.lock
 webpack/
 tsconfig-compile.json
 example/
+.github/

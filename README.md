@@ -115,30 +115,34 @@ export default class Inside extends React.PureComponent<IProps, IState> {
 }
 ```
 
+### `useAtom`
+
+```tsx
+// "Clojure Atom"-like state management
+let dataAtom = useAtom({ count: 1 });
+
+let onClick = () => {
+  /* replace data */
+  dataAtom.resetWith({ count: 0 });
+  /* update data by function, frozen by immer */
+  dataAtom.swapWith((data) => {
+    data.count += 1;
+  });
+};
+
+/* get latest state */
+<div>{dataAtom.deref().count}</div>;
+
+/* get latest state with a getter function */
+<div>{dataAtom.current}</div>;
+```
+
 ### Debug
 
 Rex added a log even in release mode for debugging, add run this to turn on:
 
 ```js
 window.REX_DEV_LOG = true;
-```
-
-### `useAtom`
-
-```tsx
-// "Clojure Atom"-like state management
-let dataAtom = useAtom({ a: 1 });
-
-let onClick = () => {
-  // get latest state
-  dataAtom.deref();
-  // replace data
-  dataAtom.resetWith({ a: 0 });
-  // update data by function, frozen by immer
-  dataAtom.swapWith((data) => {
-    data.a += 1;
-  });
-};
 ```
 
 ### Workflow
