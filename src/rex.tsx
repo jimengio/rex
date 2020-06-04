@@ -63,7 +63,7 @@ export function createStore<T>(initalState: T) {
       rexContainer.currentState = produce(rexContainer.currentState as any, f);
       emitChange();
     },
-    updateAt: function<K extends keyof T>(k: K, f: (x: T[K]) => void) {
+    updateAt: function <K extends keyof T>(k: K, f: (x: T[K]) => void) {
       devTrace("update partial with f", f);
       rexContainer.currentState = produce(rexContainer.currentState as any, (store) => {
         f(store[k]);
@@ -144,3 +144,5 @@ export function useRexContext<S, T>(selector: (s: S) => T): T {
 
   return selector(contextValue);
 }
+
+export { useAtom } from "./use-atom";
