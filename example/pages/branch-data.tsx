@@ -24,7 +24,7 @@ export default class BranchData extends React.PureComponent<IProps, IState> {
   }
 
   immerState(f: (s: IState) => void) {
-    this.setState(produce<IState>(f));
+    this.setState(produce(f));
   }
 
   render() {

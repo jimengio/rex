@@ -27,7 +27,7 @@ export default class Inside extends React.PureComponent<IProps, IState> {
   }
 
   immerState(f: (s: IState) => void) {
-    this.setState(produce<IState>(f));
+    this.setState(produce(f));
   }
 
   render() {

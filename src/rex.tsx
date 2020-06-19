@@ -60,13 +60,13 @@ export function createStore<T>(initalState: T) {
     },
     update: (f) => {
       devTrace("Update with f", f);
-      rexContainer.currentState = produce(rexContainer.currentState as any, f);
+      rexContainer.currentState = produce(rexContainer.currentState, f);
       emitChange();
     },
     updateAt: function <K extends keyof T>(k: K, f: (x: T[K]) => void) {
       devTrace("update partial with f", f);
-      rexContainer.currentState = produce(rexContainer.currentState as any, (store) => {
-        f(store[k]);
+      rexContainer.currentState = produce(rexContainer.currentState, (store) => {
+        f((store as any)[k]);
       });
       emitChange();
     },
