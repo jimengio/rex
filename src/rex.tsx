@@ -5,17 +5,17 @@ import * as shallowequal from "shallowequal";
 let logKey = "REX_DEV_LOG";
 
 if (typeof window !== "undefined") {
-  window[logKey] = false;
+  (window as Record<string, any>)[logKey] = false;
 }
 
 let devLog = (...args: any[]) => {
-  if (window && window[logKey]) {
+  if ((window as Record<string, any>)?.[logKey] != null) {
     console.log(...args);
   }
 };
 
 let devTrace = (...args: any[]) => {
-  if (window && window[logKey]) {
+  if ((window as Record<string, any>)?.[logKey] != null) {
     console.trace(...args);
   }
 };
@@ -36,7 +36,7 @@ export interface IRexStore<T> {
 export function createStore<T>(initalState: T) {
   let rexContainer = {
     currentState: initalState,
-    listeners: [],
+    listeners: [] as ((store: T) => void)[],
   };
 
   let emitChange = () => {

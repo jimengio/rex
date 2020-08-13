@@ -17,7 +17,7 @@ interface IState {}
 
 @connectRex((store: IGlobalStore) => ({ data: store.branchData }))
 export default class BranchData extends React.PureComponent<IProps, IState> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {};
