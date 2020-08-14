@@ -2,20 +2,24 @@ import * as React from "react";
 import produce from "immer";
 import * as shallowequal from "shallowequal";
 
-let logKey = "REX_DEV_LOG";
+declare global {
+  interface Window {
+    REX_DEV_LOG: boolean;
+  }
+}
 
 if (typeof window !== "undefined") {
-  (window as Record<string, any>)[logKey] = false;
+  window.REX_DEV_LOG = false;
 }
 
 let devLog = (...args: any[]) => {
-  if ((window as Record<string, any>)?.[logKey] != null) {
+  if (window?.REX_DEV_LOG != null) {
     console.log(...args);
   }
 };
 
 let devTrace = (...args: any[]) => {
-  if ((window as Record<string, any>)?.[logKey] != null) {
+  if (window?.REX_DEV_LOG != null) {
     console.trace(...args);
   }
 };
